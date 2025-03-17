@@ -1,11 +1,6 @@
-
-  
-
-
-
 import React, { useState } from 'react';
 import { supabase } from '../Supabase';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
 const Register = () => {
   const [FirstName, setFirstName] = useState('');
@@ -23,11 +18,24 @@ const Register = () => {
 
       if (error) {
         console.error('Error saving registration:', error.message);
+        Alert.alert('Error', 'Failed to save registration. Please try again.');
       } else {
         console.log('Registration successful:', data);
+        
+        // Show success popup
+        Alert.alert('Success', 'Registration saved successfully!');
+
+        // Clear form fields
+        setFirstName('');
+        setLastName('');
+        setAddress('');
+        setCity('');
+        setEmail('');
+        setPhone('');
       }
     } catch (err) {
       console.error('Unexpected error:', err.message);
+      Alert.alert('Error', 'An unexpected error occurred.');
     }
   };
 
@@ -38,11 +46,10 @@ const Register = () => {
       <TextInput placeholder="Last Name" value={LastName} onChangeText={setLastName} style={styles.input} />
       <TextInput placeholder="Address" value={address} onChangeText={setAddress} style={styles.input} />
       <TextInput placeholder="City" value={city} onChangeText={setCity} style={styles.input} />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />
-      <TextInput placeholder="Phone Number" value={phone} onChangeText={setPhone} style={styles.input} />
+      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} keyboardType="email-address" />
+      <TextInput placeholder="Phone Number" value={phone} onChangeText={setPhone} style={styles.input} keyboardType="phone-pad" />
       
       <Button title="Submit" onPress={handleSubmit} />
-      
     </View>
   );
 };
@@ -72,7 +79,3 @@ const styles = StyleSheet.create({
 });
 
 export default Register;
-
-
-
-
